@@ -36,22 +36,20 @@ package leetcode.editor.en;
 // Related Topics Hash Table Two Pointers String Sliding Window
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int max = 0, i = 0, j = 0;
-        int l = s.length();
-        Set<Character> set = new HashSet<>();
-        while (i < l && j < l) {
-            if (!set.contains(s.charAt(j))) {
-                set.add(s.charAt(j++));
-                max = Math.max(max, j - i);
-            } else {
-                set.remove(s.charAt(i++));
+        int max = 0, l = s.length();
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0, j = 0; j < l; j++) {
+            if (map.containsKey(s.charAt(j))) {
+                i = Math.max(map.get(s.charAt(j)), i);
             }
+            max = Math.max(max, j - i + 1);
+            map.put(s.charAt(j), j + 1);
         }
         return max;
     }
