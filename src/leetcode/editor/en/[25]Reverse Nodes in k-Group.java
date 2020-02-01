@@ -38,29 +38,25 @@
  */
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode fake = new ListNode(0);
-        fake.next = head;
-        ListNode pre = fake;
-        while (true) {
-            ListNode p = pre.next;
-            int count = 1;
-            ListNode start = p, end = p;
-            for (; count < k; count++) {
-                if (p == null) break;
-                p = p.next;
-            }
-            if (count != k) break;
-            if (p == null) break;
-            for (int i = 1; i < k; i++) {
-                ListNode temp = end.next;
-                end.next = temp.next;
-                temp.next = start;
-                start = temp;
-                pre.next = temp;
-            }
-            pre = end;
+        if (head == null) return null;
+        ListNode temp = head;
+        for (int i = 1; i < k; i++) {
+            temp = temp.next;
+            if (temp == null) return head;
         }
-        return fake.next;
+        //直接递归到最后一个组为止，从后往前开始倒转
+        temp.next = reverseKGroup(temp.next, k);
+        temp = head;
+        ListNode pre = head, current;
+        //倒转当前组
+        for (int i = 1; i < k; i++) {
+            current = temp.next;
+            temp.next = current.next;
+            current.next = pre;
+            head = current;
+            pre = head;
+        }
+        return head;
     }
 
 //    public class ListNode {
