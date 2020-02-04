@@ -19,25 +19,22 @@ import java.util.Stack;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int trap(int[] height) {
-        int total = 0;
-        int length = height.length;
-        if (length < 3) return total;
-        //单调栈
-        Stack<Integer> stack = new Stack<>();
-        int i = 0;
-        while (i < length) {
-            int current = height[i];
-            if (stack.isEmpty() || current < height[stack.peek()]) {
-                //current如果比栈顶底的话
-                stack.push(i++);
+        if (height.length==0) return 0;
+        int left = 0, right = height.length-1;
+        int leftMax=0, rightMax=0;
+        int ans = 0;
+        while (left < right) {
+            if (height[left] > leftMax) leftMax = height[left];
+            if (height[right] > rightMax) rightMax = height[right];
+            if (leftMax < rightMax) {
+                ans += Math.max(0, leftMax-height[left]);
+                left++;
             } else {
-                int t = stack.peek();
-                stack.pop();
-                if (stack.isEmpty()) continue;
-                total += (Math.min(current, height[stack.peek()]) - height[t]) * (i - stack.peek() - 1);
+                ans += Math.max(0, rightMax-height[right]);
+                right--;
             }
         }
-        return total;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
