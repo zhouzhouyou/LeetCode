@@ -73,35 +73,19 @@ import java.util.Set;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isValidSudoku(char[][] board) {
-        Set<Character> stack = new HashSet<>();
-        for (char[] row : board) {
-            for (char x : row) {
-                if (x == '.') continue;
-                if (stack.contains(x)) return false;
-                stack.add(x);
-            }
-            stack.clear();
-        }
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                char x = board[j][i];
-                if (x == '.') continue;
-                if (stack.contains(x)) return false;
-                stack.add(x);
-            }
-            stack.clear();
-        }
-        for (int i = 0; i < 9; i += 3) {
-            for (int j = 0; j < 9; j += 3) {
-                for (int k = 0; k < 3; k++) {
-                    for (int l = 0; l < 3; l++) {
-                        char x = board[i+k][j+l];
-                        if (x == '.') continue;
-                        if (stack.contains(x)) return false;
-                        stack.add(x);
-                    }
-                }
-                stack.clear();
+        for(int i = 0; i<9; i++){
+            HashSet<Character> rows = new HashSet<>();
+            HashSet<Character> columns = new HashSet<>();
+            HashSet<Character> cube = new HashSet<>();
+            for (int j = 0; j < 9;j++){
+                if(board[i][j]!='.' && !rows.add(board[i][j]))
+                    return false;
+                if(board[j][i]!='.' && !columns.add(board[j][i]))
+                    return false;
+                int RowIndex = 3*(i/3);
+                int ColIndex = 3*(i%3);
+                if(board[RowIndex + j/3][ColIndex + j%3]!='.' && !cube.add(board[RowIndex + j/3][ColIndex + j%3]))
+                    return false;
             }
         }
         return true;
