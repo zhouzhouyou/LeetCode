@@ -30,14 +30,13 @@ class Solution {
     }
 
     private void backtrack(List<List<Integer>> lists, List<Integer> integers, int n, int k, int start) {
-        for (int i = start; i <= n; i++) {
+        if (k == 0) {
+            lists.add(new ArrayList<>(integers));
+            return;
+        }
+        for (int i = start; i <= n - k + 1; i++) {
             integers.add(i);
-            if (integers.size() == k) {
-                lists.add(new ArrayList<>(integers));
-                integers.remove(integers.size() - 1);
-                continue;
-            }
-            backtrack(lists, integers, n, k, i + 1);
+            backtrack(lists, integers, n, k - 1, i + 1);
             integers.remove(integers.size() - 1);
         }
     }
