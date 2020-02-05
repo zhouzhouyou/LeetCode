@@ -259,6 +259,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/en/[47]Permutations II.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/en/[47]Permutations II.java" />
+              <option name="questionId" value="47" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/en/[4]Median of Two Sorted Arrays.java">
           <value>
             <LeetcodeEditor>
@@ -304,6 +312,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/en/[83]Remove Duplicates from Sorted List.java" />
               <option name="questionId" value="83" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/en/[90]Subsets II.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/en/[90]Subsets II.java" />
+              <option name="questionId" value="90" />
             </LeetcodeEditor>
           </value>
         </entry>
