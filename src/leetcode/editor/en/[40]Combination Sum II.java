@@ -37,54 +37,31 @@
 // Related Topics Array Backtracking
 
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
         List<List<Integer>> ans = new LinkedList<>();
-        int hi = candidates.length - 1;
-        while (hi >= 0) {
-            int cp = Integer.compare(candidates[hi], target);
-            if (cp > 0) hi--;
-            else if (cp < 0) break;
-            else {
-                ans.add(Collections.singletonList(target));
-                while (hi > 0 && candidates[hi - 1] == target) hi--;
-                hi--;
-                break;
-            }
-        }
-        if (hi < 0) return ans;
-        ans.addAll(combinationSum(candidates, target, 0, 0, hi));
+        backtrack(ans, new ArrayList<>(), candidates, target, 0);
         return ans;
     }
 
-    public List<List<Integer>> combinationSum(int[] nums, int target, int start, int pre_sum, int hi) {
-        List<List<Integer>> ans = new LinkedList<>();
-        for (int i = start; i <= hi; i++) {
-            int current = nums[i];
-            if (i != start && nums[i - 1] == nums[i]) continue;
-            int sum = pre_sum + current;
-            if (sum > target) return ans;
-            if (sum == target) {
-                ans.add(Collections.singletonList(current));
-                return ans;
-            } else {
-                List<List<Integer>> temp = combinationSum(nums, target, i + 1, sum, hi);
-                for (List<Integer> list : temp) {
-                    List<Integer> temp2 = new LinkedList<>();
-                    temp2.add(current);
-                    temp2.addAll(list);
-                    ans.add(temp2);
-                }
-            }
+    private void backtrack(List<List<Integer>> lists, List<Integer> tempList, int[] nums, int remain, int start) {
+        if (remain == 0) {
+            lists.add(new ArrayList<>(tempList));
+            return;
         }
-        return ans;
+        for (int i = start; i < nums.length; i++) {
+            int current = nums[i];
+            if (i > start && current == nums[i - 1]) continue;
+            if (current > remain) return;
+            tempList.add(current);
+            backtrack(lists, tempList, nums, remain - current, i + 1);
+            tempList.remove(tempList.size() - 1);
+        }
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
