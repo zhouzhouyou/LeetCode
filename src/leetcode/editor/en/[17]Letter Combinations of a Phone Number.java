@@ -56,5 +56,19 @@ class Solution {
             temp.deleteCharAt(temp.length()-1);
         }
     }
+
+    private void backtrack(List<String> list, StringBuilder sb, char[][] map, String digits, int start) {
+        if (start == digits.length()) {
+            list.add(sb.toString());
+            return;
+        }
+
+        char[] chars = map[digits.charAt(start) - '2'];
+        for (char x : chars) {
+            sb.append(x);
+            backtrack(list, sb, map, digits, start + 1);
+            sb.delete(sb.length() - 1, sb.length());
+        }
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
