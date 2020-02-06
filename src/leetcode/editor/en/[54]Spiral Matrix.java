@@ -31,41 +31,28 @@ import java.util.List;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> ans = new ArrayList<>();
-        if (matrix.length == 0) return ans;
-        if (matrix[0].length == 0) return ans;
-        dfs(ans, 0, 0, matrix, new boolean[matrix.length][matrix[0].length], 0);
-        return ans;
-    }
+        List<Integer> res = new ArrayList<>();
+        if (matrix == null || matrix.length == 0) return res;
+        int n = matrix.length, m = matrix[0].length;
+        int up = 0,  down = n - 1;
+        int left = 0, right = m - 1;
+        int product = n * m;
+        while (res.size() < product) {
+            for (int j = left; j <= right && res.size() < product; j++)
+                res.add(matrix[up][j]);
 
-    private void dfs(List<Integer> path, int row, int col, int[][] matrix, boolean[][] used, int direct) {
-        used[row][col] = true;
-        path.add(matrix[row][col]);
-        if (direct == 0) {
-            if (col < matrix[row].length - 1 && !used[row][col+1]) {
-                dfs(path, row, col + 1, matrix, used, 0);
-            } else if (row < matrix.length - 1 && !used[row + 1][col]) {
-                dfs(path, row + 1, col, matrix, used, 1);
-            }
-        } else if (direct == 1) {
-            if (row < matrix.length - 1 && !used[row + 1][col]) {
-                dfs(path, row + 1, col, matrix, used, 1);
-            } else if (col > 0 && !used[row][col - 1]) {
-                dfs(path, row, col - 1, matrix, used, 2);
-            }
-        } else if (direct == 2) {
-            if (col > 0 && !used[row][col - 1]) {
-                dfs(path, row, col - 1, matrix, used, 2);
-            } else if (row > 0 && !used[row - 1][col]) {
-                dfs(path, row - 1, col, matrix, used, 3);
-            }
-        } else if (direct == 3) {
-            if (row > 0 && !used[row - 1][col]) {
-                dfs(path, row - 1, col, matrix, used, 3);
-            } else if (col < matrix[row].length - 1 && !used[row][col+1]) {
-                dfs(path, row, col + 1, matrix, used, 0);
-            }
+            for (int i = up + 1; i <= down - 1 && res.size() < product; i++)
+                res.add(matrix[i][right]);
+
+            for (int j = right; j >= left && res.size() < product; j--)
+                res.add(matrix[down][j]);
+
+            for (int i = down - 1; i >= up + 1 && res.size() < product; i--)
+                res.add(matrix[i][left]);
+
+            left++; right--; up++; down--;
         }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
