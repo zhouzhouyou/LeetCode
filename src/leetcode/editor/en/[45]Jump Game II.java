@@ -25,15 +25,16 @@ import java.util.Arrays;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int jump(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, Integer.MAX_VALUE);
-        dp[0] = 0;
-        for (int i = 0; i < nums.length - 1; i++) {
-            for (int j = 1; j <= nums[i] && i + j < nums.length; j++) {
-                dp[i + j] = Math.min(dp[i+j], dp[i] + 1);
+        int jumps = 0, curEnd = 0, curFarthest = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > curFarthest) return -1;
+            curFarthest = Math.max(curFarthest, i + nums[i]);
+            if (i < nums.length-1 && i == curEnd) {
+                jumps++;
+                curEnd = curFarthest;
             }
         }
-        return dp[nums.length - 1];
+        return jumps;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
