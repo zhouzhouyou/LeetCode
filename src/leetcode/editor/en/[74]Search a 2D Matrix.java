@@ -37,31 +37,21 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        int row = matrix.length;
-        if (row == 0) return false;
-        int col = matrix[0].length;
-        if (col == 0) return false;
-        int top = 0, down = row - 1;
-        int horizon = 0 ,vertical = (top + down) / 2;;
-        while (top < down) {
-            int cp = Integer.compare(matrix[vertical][0], target);
-            if (cp < 0) {
-                if (matrix[vertical+1][0] > target) break;
-                if (top == vertical) top++;
-                else top = vertical;
-            }
-            else if (cp > 0) down = vertical - 1;
-            else return true;
-            vertical = (top + down) / 2;
+        if (matrix == null || matrix.length == 0) {
+            return false;
         }
-        int[] range = matrix[vertical];
-        int left = 0, right = col - 1;
-        while (left <= right) {
-            horizon = (left + right) / 2;
-            int cp = Integer.compare(range[horizon], target);
-            if (cp < 0) left = horizon + 1;
-            else if (cp > 0) right = horizon - 1;
-            else return true;
+        int start = 0, rows = matrix.length, cols = matrix[0].length;
+        int end = rows * cols - 1;
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            if (matrix[mid / cols][mid % cols] == target) {
+                return true;
+            }
+            if (matrix[mid / cols][mid % cols] < target) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
         }
         return false;
     }
