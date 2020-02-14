@@ -42,23 +42,19 @@ import java.util.List;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
-        int len = s.length();
-        boolean[] v = new boolean[len + 1];
-        v[0] = true;
+        return backtrack(s, wordDict, new boolean[s.length()], 0);
+    }
 
-        for (int i = 0; i < len; i++) {
-            if (!v[i])
-                continue;
-
-            String substr = s.substring(i);
-            for (String word : wordDict) {
-                if (substr.startsWith(word)) {
-                    v[i + word.length()] = true;
-                }
+    private boolean backtrack(String s, List<String> dict, boolean[] dp, int begin) {
+        if (begin == s.length()) return true;
+        if (dp[begin]) return false;
+        for (String w : dict) {
+            if (s.startsWith(w, begin)) {
+                if (backtrack(s, dict, dp, begin + w.length())) return true;
+                dp[begin] = true;
             }
         }
-
-        return v[len];
+        return false;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
