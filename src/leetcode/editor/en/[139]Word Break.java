@@ -41,48 +41,24 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    private static class TrieNode {
-        boolean isWord;
-        TrieNode[] c;
-
-        public TrieNode() {
-            c= new TrieNode[128];
-        }
-    }
-
-    private void addWord(String word, TrieNode node) {
-        for (int i = 0; i < word.length(); i++) {
-            int j = word.charAt(i);
-            if (node.c[j] == null) node.c[j] = new TrieNode();
-            node = node.c[j];
-        }
-        node.isWord = true;
-    }
-
-    private boolean startWith(String word, TrieNode root) {
-        TrieNode cur = root;
-        for (int i = 0; i < word.length(); i++) {
-            cur = cur.c[word.charAt(i)];
-            if (cur == null) return false;
-        }
-        return cur.isWord;
-    }
-
     public boolean wordBreak(String s, List<String> wordDict) {
-        TrieNode root = new TrieNode();
-        wordDict.forEach(s1 -> addWord(s1, root));
-        boolean[] f = new boolean[s.length() + 1];
-        f[0] = true;
+        int len = s.length();
+        boolean[] v = new boolean[len + 1];
+        v[0] = true;
 
-        for (int i = 0; i < s.length(); i++) {
-            if (!f[i]) continue;
-            for (int j = i; j < s.length(); j++) {
-                if (f[j+1]) continue;
-                String sub = s.substring(i, j + 1);
-                if (startWith(sub, root)) f[j + 1] = true;
+        for (int i = 0; i < len; i++) {
+            if (!v[i])
+                continue;
+
+            String substr = s.substring(i);
+            for (String word : wordDict) {
+                if (substr.startsWith(word)) {
+                    v[i + word.length()] = true;
+                }
             }
         }
-        return f[s.length()];
+
+        return v[len];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
