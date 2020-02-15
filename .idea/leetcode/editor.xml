@@ -371,6 +371,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/en/[205]Isomorphic Strings.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/en/[205]Isomorphic Strings.java" />
+              <option name="questionId" value="205" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/en/[208]Implement Trie (Prefix Tree).java">
           <value>
             <LeetcodeEditor>
