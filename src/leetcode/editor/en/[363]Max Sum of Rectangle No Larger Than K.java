@@ -17,35 +17,37 @@
 // Related Topics Binary Search Dynamic Programming Queue
 
 
-import java.util.TreeSet;
-
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxSumSubmatrix(int[][] matrix, int k) {
-        int rows = matrix.length, cols = rows > 0 ? matrix[0].length : 0;
-        if (rows == 0 || cols == 0) return 0;
-        int ans = Integer.MIN_VALUE;
-
-        for (int left = 0; left < cols; left++) {
-            int[] sums = new int[rows];
-            for (int right = left; right < cols; right++) {
-                for (int i = 0; i < rows; i++) sums[i] += matrix[i][right];
-
-                TreeSet<Integer> set = new TreeSet<>();
-                set.add(0);
-                int curSum = 0;
-
-                for (int sum : sums) {
-                    curSum += sum;
-                    //寻找curSum - num <= k (即某一段的值小于k)
-                    Integer num = set.ceiling(curSum - k);
-                    if (num != null) ans = Math.max(ans, curSum - num);
-                    set.add(curSum);
+        int rows = matrix.length, cols = matrix[0].length, res = Integer.MIN_VALUE;
+        for (int left = 0; left < cols; ++left) {
+            int[] sum = new int[rows];
+            for (int right = left; right < cols; ++right) {
+                for (int r = 0; r < rows; ++r) {
+                    sum[r] += matrix[r][right];
                 }
+
+                int max = sum[0], maxSoFar = 0;
+                for (int s : sum) {
+                    maxSoFar = Math.max(maxSoFar + s, s);
+                    max = Math.max(max, maxSoFar);
+                    if (max == k) return k;
+                }
+                if (max < k) res = Math.max(res, max);
+                else {
+                    for (int top = 1; top < rows; ++top) {
+                        int currSum = 0;
+                        for (int down = top; down < rows; ++down) {
+                            currSum += sum[down];
+                            if (currSum <= k) res = Math.max(res, currSum);
+                        }
+                    }
+                }
+                if (res == k) return res;
             }
         }
-
-        return ans;
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
