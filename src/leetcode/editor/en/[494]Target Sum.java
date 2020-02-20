@@ -35,22 +35,21 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    int sum = 0;
-
     public int findTargetSumWays(int[] nums, int S) {
-        helper(nums, S, 0, -1);
-        return sum;
-    }
+        int sum = 0;
+        for(int n: nums) sum += n;
+        if (S < -sum || S > sum) { return 0;}
 
-    private void helper(int[] nums, int S, int cur, int k) {
-        k++;
-        if (k == nums.length - 1) {
-            if (cur + nums[k] == S) sum++;
-            if (cur - nums[k] == S) sum++;
-            return;
+        int[][] dp = new int[nums.length + 1][ 2 * sum + 1];
+        dp[0][0 + sum] = 1; // 0 + sum means 0, 0 means -sum,  check below graph
+        for(int i = 1; i <= nums.length; i++){
+            for(int j = 0; j < 2 * sum + 1; j++){
+
+                if(j + nums[i - 1] < 2  * sum + 1) dp[i][j] += dp[i - 1][j + nums[i - 1]];
+                if(j - nums[i - 1] >= 0) dp[i][j] += dp[i - 1][j - nums[i - 1]];
+            }
         }
-        helper(nums, S, cur + nums[k], k);
-        helper(nums, S, cur - nums[k], k);
+        return dp[nums.length][sum + S];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
