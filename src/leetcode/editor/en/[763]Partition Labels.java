@@ -23,30 +23,25 @@
 
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<Integer> partitionLabels(String S) {
-        List<int[]> base = new ArrayList<>();
-        for (int i = 0; i < 26; i++) {
-            String x = String.valueOf((char) ('a' + i));
-            if (!S.contains(x)) continue;
-            int first = S.indexOf(x), last = S.lastIndexOf(x);
-            base.add(new int[]{first, last});
-        }
-        base.sort(Comparator.comparingInt(o -> o[0]));
-        LinkedList<int[]> list = new LinkedList<>();
-        base.forEach(array -> {
-            if (list.isEmpty() || list.getLast()[1] < array[0]) list.addLast(array);
-            else {
-                list.getLast()[1] = Math.max(list.getLast()[1], array[1]);
+        int[] last = new int[26];
+        for (int i = 0; i < S.length(); ++i)
+            last[S.charAt(i) - 'a'] = i;
+
+        int j = 0, anchor = 0;
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < S.length(); ++i) {
+            //j 记录着出现过的最大值，如果当前i等于j，意味着这之前没有任何字母的范围超过了i
+            j = Math.max(j, last[S.charAt(i) - 'a']);
+            if (i == j) {
+                ans.add(i - anchor + 1);
+                anchor = i + 1;
             }
-        });
-        List<Integer> ans = new LinkedList<>();
-        list.forEach(array -> ans.add(array[1] - array[0] + 1));
+        }
         return ans;
     }
 }
