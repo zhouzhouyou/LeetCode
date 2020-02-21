@@ -18,16 +18,20 @@
 // Related Topics Array Hash Table
 
 
+import java.util.HashMap;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int subarraySum(int[] nums, int k) {
         int count = 0;
-        for (int start = 0; start < nums.length; start++) {
-            int sum = 0;
-            for (int end = start; end < nums.length; end++) {
-                sum += nums[end];
-                if (sum == k) count++;
-            }
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+            //往前找，看有几种与自己相差为k的可能性
+            if (map.containsKey(sum - k)) count += map.get(sum - k);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
         return count;
     }
