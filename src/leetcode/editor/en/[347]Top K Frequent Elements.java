@@ -29,25 +29,23 @@ import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public static class Pair {
-        public int num;
-        public int freq;
-
-        private Pair(int num, int freq) {
-            this.num = num;
-            this.freq = freq;
-        }
-    }
-
     public List<Integer> topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int num : nums) map.put(num, map.getOrDefault(num, 0) + 1);
-        List<Pair> list = new ArrayList<>();
-        map.keySet().forEach(integer -> list.add(new Pair(integer, map.get(integer))));
-        list.sort((o1, o2) -> - o1.freq + o2.freq);
-        List<Integer> ans = new LinkedList<>();
-        for (int i = 0; i < k; i++) ans.add(list.get(i).num);
-        return ans;
+        // freq map
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int n : nums) freq.put(n, freq.getOrDefault(n, 0) + 1);
+        // bucket sort on freq
+        List<Integer>[] bucket = new ArrayList[nums.length + 1];
+        for (int i = 0; i < bucket.length; i++) bucket[i] = new ArrayList();
+        for (int key : freq.keySet()) {
+            bucket[freq.get(key)].add(key);
+        }
+        // gather result
+        List<Integer> res = new ArrayList();
+        for (int i = bucket.length - 1; i >= 0; i--) {
+            res.addAll(bucket[i]);
+            if (res.size() >= k) break;
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
