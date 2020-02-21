@@ -38,39 +38,18 @@ import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    private static class Node {
-        int capacity;
-        List<Integer> list = new LinkedList<>();
-        Node next;
-
-        Node(int capacity) {
-            this.capacity = capacity;
-        }
-
-        void add(int num) {
-            if (list.size() < capacity) list.add(num);
-            else {
-                if (next == null) next = new Node(capacity);
-                next.add(num);
+    public List<List<Integer>> groupThePeople(int[] groupSizes) {
+        List<List<Integer>> res = new ArrayList<>();
+        Map<Integer, List<Integer>> groups = new HashMap<>();
+        for (int i = 0; i < groupSizes.length; ++i) {
+            List<Integer> list = groups.computeIfAbsent(groupSizes[i], k -> new ArrayList<>());
+            list.add(i);
+            if (list.size() == groupSizes[i]) {
+                res.add(list);
+                groups.put(groupSizes[i], new ArrayList<>());
             }
         }
-
-        void iter(List<List<Integer>> lists) {
-            lists.add(list);
-            if (next != null) next.iter(lists);
-        }
-    }
-
-    public List<List<Integer>> groupThePeople(int[] groupSizes) {
-        List<List<Integer>> lists = new ArrayList<>();
-        Map<Integer, Node> map = new HashMap<>();
-        for (int i = 0; i < groupSizes.length; i++) {
-            int size = groupSizes[i];
-            if (!map.containsKey(size)) map.put(size, new Node(size));
-            map.get(size).add(i);
-        }
-        map.values().forEach(node -> node.iter(lists));
-        return lists;
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
