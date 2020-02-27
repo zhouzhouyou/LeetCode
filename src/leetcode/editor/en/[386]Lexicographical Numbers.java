@@ -25,7 +25,8 @@ class Solution {
         list.add(cur);
         cur *= 10;
         for (int i = 0; i < 10; i++) {
-            if (cur + i <= n) dfs(cur + i, n, list);
+            if (cur + i > n) return;
+            dfs(cur + i, n, list);
         }
     }
 }
