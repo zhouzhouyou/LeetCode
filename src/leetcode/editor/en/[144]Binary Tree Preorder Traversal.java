@@ -21,6 +21,7 @@
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Definition for a binary tree node.
@@ -34,16 +35,21 @@ import java.util.List;
 class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
-        traversal(list, root);
+        if (root == null) {
+            return list;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.add(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            list.add(node.val);
+            if (node.right != null) stack.add(node.right);
+            if (node.left != null) stack.add(node.left);
+        }
+
         return list;
     }
 
-    private void traversal(List<Integer> list, TreeNode root) {
-        if (root == null) return;
-        list.add(root.val);
-        traversal(list, root.left);
-        traversal(list, root.right);
-    }
 
 //    public class TreeNode {
 //        int val;
