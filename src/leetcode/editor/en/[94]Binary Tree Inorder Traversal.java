@@ -20,6 +20,7 @@
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Definition for a binary tree node.
@@ -33,16 +34,20 @@ import java.util.List;
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
-        backtrack(list, root);
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            TreeNode node = stack.pop();
+            list.add(node.val);
+            cur = node.right;
+        }
         return list;
     }
 
-    private void backtrack(List<Integer> list, TreeNode root) {
-        if (root == null) return;
-        backtrack(list, root.left);
-        list.add(root.val);
-        backtrack(list, root.right);
-    }
 
 //    public class TreeNode {
 //        int val;
