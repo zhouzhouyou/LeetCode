@@ -30,63 +30,30 @@ class Solution {
             return head;
         }
 
-        int len = 0;
-        ListNode dummy = head;
-        while (dummy != null) {
-            len++;
-            dummy = dummy.next;
+        ListNode mid = head, p = head.next;
+        while (p != null && p.next != null) {
+            mid = mid.next;
+            p = p.next.next;
         }
 
-        dummy = new ListNode(0);
-        dummy.next = head;
+        ListNode h1 = head, h2 = mid.next;
+        mid.next = null;
+        h1 = sortList(h1);
+        h2 = sortList(h2);
 
-        for (int i = 1; i < len; i <<= 1) {
-            ListNode pre = dummy;
-            ListNode cur = dummy.next;
-            while (cur != null) {
-                ListNode left = cur;
-                ListNode right = split(left, i);
-                cur = split(right, i);
-                pre.next = merge(left, right);
-                while (pre.next != null) {
-                    pre = pre.next;
-                }
-            }
-        }
-
-        return dummy.next;
-    }
-
-    private ListNode split(ListNode h, int step) {
-        if (h == null) return null;
-        for (int i = 1; h.next != null && i < step; i++) {
-            h = h.next;
-        }
-
-        ListNode right = h.next;
-        h.next = null;
-        return right;
-    }
-
-    private ListNode merge(ListNode h1, ListNode h2) {
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
-
+        ListNode dummy = new ListNode(-1);
+        p = dummy;
         while (h1 != null && h2 != null) {
             if (h1.val < h2.val) {
-                cur.next = h1;
+                p.next = h1;
                 h1 = h1.next;
             } else {
-                cur.next = h2;
+                p.next = h2;
                 h2 = h2.next;
             }
-            cur = cur.next;
+            p = p.next;
         }
-        if (h1 != null) {
-            cur.next = h1;
-        } else {
-            cur.next = h2;
-        }
+        p.next = h1 != null ? h1 : h2;
         return dummy.next;
     }
 
