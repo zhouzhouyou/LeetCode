@@ -34,23 +34,35 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public double myPow(double x, int n) {
-        if (n == 0) return 1;
+        double mul = 1;
         if (n > 0) {
-            double temp = myPow(x, n >> 1);
-            if ((n & 1) == 1) {
-                return temp * temp * x;
-            } else {
-                return temp * temp;
+            mul = powIteration(x, n);
+        } else {
+            //单独考虑 n = -2147483648
+            if (n == -2147483648) {
+                return myPow(x, -2147483647) * (1 / x);
             }
+            n = -n;
+            mul *= powIteration(x, n);
+            mul = 1 / mul;
         }
-        else {
-            double temp = myPow(x, n / 2);
+        return mul;
+    }
+
+    public double powIteration(double x, int n) {
+        double ans = 1;
+        //遍历每一位
+        while (n > 0) {
+            //最后一位是 1，加到累乘结果里
             if ((n & 1) == 1) {
-                return temp * temp / x;
-            } else {
-                return temp * temp;
+                ans *= x;
             }
+            //更新 x
+            x *= x;
+            //n 右移一位
+            n >>= 1;
         }
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
